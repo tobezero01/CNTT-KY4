@@ -1,0 +1,96 @@
+create database QuanLyPhongKham;
+use QuanLyPhongKham;
+CREATE TABLE BacSi
+(
+  MaBacSi nvarchar(10) NOT NULL,
+  TenBacSi nvarchar(50) NOT NULL,
+  GoiTinh bit ,
+  NgaySinh datetime ,
+  SoDienThoai nvarchar(10) ,
+  DiaChi nvarchar(255) ,
+  ChuyenKhoa nVARCHAR(255),
+  PRIMARY KEY (MaBacSi)
+);
+
+CREATE TABLE BenhNhan
+(
+  MaBenhNhan nvarchar(10) NOT NULL,
+  TenBenhNhan nvarchar(50) NOT NULL,
+  GioiTinh bit ,
+  NgaySinh datetime ,
+  SoDienThoai nvarchar(10) ,
+  DiaChi nvarchar(255) ,
+  PRIMARY KEY (MaBenhNhan)
+);
+
+CREATE TABLE HoaDon
+(
+  MaHoaDon nvarchar(10) NOT NULL,
+  TongTien INT ,
+  NgayLap datetime,
+  PRIMARY KEY (MaHoaDon)
+);
+
+CREATE TABLE PhieuKhamBenh
+(
+  MaPhieuKham nvarchar(10) NOT NULL,
+  MaBacSi nvarchar(10) NOT NULL,
+  MaBenhNhan nvarchar(10) NOT NULL,
+  MaHoaDon nvarchar(10) NOT NULL,
+  NgayKham datetime,
+  TienSuBenh nvarchar(255) ,
+  TrieuChung nvarchar(255) ,
+  ChanDoanBenh nvarchar(255) ,
+  PRIMARY KEY (MaPhieuKham),
+  FOREIGN KEY (MaBacSi) REFERENCES BacSi(MaBacSi),
+  FOREIGN KEY (MaBenhNhan) REFERENCES BenhNhan(MaBenhNhan),
+  FOREIGN KEY (MaHoaDon) REFERENCES HoaDon(MaHoaDon)
+);
+
+CREATE TABLE DichVuKham
+(
+  MaDichVukham nVARCHAR(10) NOT NULL,
+  TenDichVu nVARCHAR(255) ,
+  GiaTien int ,
+  PRIMARY KEY (MaDichVukham)
+);
+
+CREATE TABLE Thuoc
+(
+  MaThuoc nvarchar(10) NOT NULL,
+  TenThuoc nvarchar(255) ,
+  DonViTinh nvarchar(50) , 
+  PRIMARY KEY (MaThuoc)
+);
+CREATE TABLE DonThuoc
+(
+  MaDonThuoc nvarchar(10)  NOT NULL,
+  MaPhieuKham nvarchar(10) NOT NULL,
+  NgayKe datetime ,
+  DaMuaThuoc  bit ,
+  TongTienThuoc int,
+  PRIMARY KEY (MaDonThuoc),
+  FOREIGN KEY (MaPhieuKham) REFERENCES PhieuKhamBenh(MaPhieuKham)
+);
+
+CREATE TABLE ChiTietDonThuoc
+(
+  MaDonThuoc nvarchar(10) NOT NULL,
+  MaThuoc nvarchar(10) NOT NULL,
+  SoLuong INT ,
+  LieuDung nvarchar(50) ,
+  DonGia INT ,
+  PRIMARY KEY (MaThuoc, MaDonThuoc),
+  FOREIGN KEY (MaThuoc) REFERENCES Thuoc(MaThuoc),
+  FOREIGN KEY (MaDonThuoc) REFERENCES DonThuoc(MaDonThuoc)
+);
+
+CREATE TABLE PhieuKham_DichVu
+(
+  MaPhieuKham nvarchar(10) NOT NULL,
+  MaDichVukham nvarchar(10) NOT NULL,
+  PRIMARY KEY (MaPhieuKham, MaDichVukham),
+  FOREIGN KEY (MaPhieuKham) REFERENCES PhieuKhamBenh(MaPhieuKham),
+  FOREIGN KEY (MaDichVukham) REFERENCES DichVuKham(MaDichVukham)
+);
+
